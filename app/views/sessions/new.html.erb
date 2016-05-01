@@ -1,0 +1,15 @@
+<h1>Identifique-se</h1>
+<%= form_tag sessions_path do %>
+  <div class="form-group">
+    <label id="email">E-mail</label>
+    <input type="email" class="form-control" name="email" id="email">
+  </div>
+  <div class="form-group">
+    <label id="password">Senha</label>
+    <input class="form-control" type="password" id="password" name="password">
+  </div>
+  <div class="checkbox">
+    <label><input type="checkbox" name="register"> Criar usuário</label>
+  </div>
+  <button type="submit" class="btn btn-default">Entrar</button>
+<% end %>

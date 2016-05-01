@@ -1,0 +1,5 @@
+<legend>Alterar Contato</legend>
+<%= form_tag contact_path(@contact), method: :put do %>
+  <%= render partial: 'form' %>
+  <input type="submit" class="btn btn-default" value="Salvar"> <%= link_to 'Cancelar', contacts_path, class: 'btn btn-link' %>
+<% end %>

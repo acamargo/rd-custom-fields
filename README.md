@@ -1,9 +1,9 @@
 # RD Custom Fields
 
   This application is a contact list where the user can define custom fields in
-   the contact registry.
+   the contact record.
 
-  When you access the app you create an user which holds contacts entries
+  When you access the app you create an user which holds contacts records
    and custom fields definitions.
 
 ## How to run it locally
@@ -12,7 +12,7 @@
 
     Follow the instructions on https://wiki.postgresql.org/wiki/Detailed_installation_guides
 
-  * After your the server is up and running, create a new PostgreSQL role to be used by the application
+  * After the server is up and running, create a new PostgreSQL role to be used by the application
 
     ```
     $ createuser -P rd-custom-fields

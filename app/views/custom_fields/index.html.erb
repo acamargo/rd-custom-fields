@@ -1,31 +1,27 @@
 <p><%= link_to 'Adicionar Campo Personalizado', new_custom_field_path, class: 'btn btn-success' %></p>
-<% if @custom_fields.count == 0 %>
-  <div class="well">Nenhum campo cadastrado.</div>
-<% else %>
-  <table class="table table-hover">
-    <thead>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Tipo</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>E-mail</td>
+      <td>Texto</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <% @custom_fields.each do |custom_field| %>
       <tr>
-        <th>Nome</th>
-        <th>Tipo</th>
-        <th></th>
-        <th></th>
+        <td><%= custom_field.name %></td>
+        <td><%= custom_field.content_type_name %></td>
+        <td><%= link_to 'Alterar', edit_custom_field_path(custom_field) %></td>
+        <td><%= link_to 'Excluir', custom_field_path(custom_field), method: :delete, data: { confirm: "Excluir campo #{custom_field.name}?" } %></td>
       </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>E-mail</td>
-        <td>Texto</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <% @custom_fields.each do |custom_field| %>
-        <tr>
-          <td><%= custom_field.name %></td>
-          <td><%= custom_field.content_type_name %></td>
-          <td><%= link_to 'Alterar', edit_custom_field_path(custom_field) %></td>
-          <td><%= link_to 'Excluir', custom_field_path(custom_field), method: :delete, data: { confirm: "Excluir campo #{custom_field.name}?" } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+    <% end %>
+  </tbody>
+</table>

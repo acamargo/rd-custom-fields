@@ -1,9 +1,14 @@
 <div class="form-group<%= ' has-error' if @contact.errors[:email].any? %>">
   <label for="email" class="control-label">E-mail</label>
   <input type="text" class="form-control" name="email" value="<%= @contact.email %>">
+  <% if @contact.errors[:email].any? %>
+    <% @contact.errors[:email].each do |msg| %>
+      <span class="help-block"><%= msg %></span>
+    <% end %>
+  <% end %>
 </div>
 <% current_user.custom_fields.each do |custom_field| %>
-  <div class="form-group">
+  <div class="form-group<%= ' has-error' if @contact.errors[custom_field.slug].any? %>">
     <label for="<%= custom_field.slug %>" class="control-label"><%= custom_field.name %></label>
     <% if custom_field.content_type_text? %>
       <input type="text" class="form-control" name="<%= custom_field.slug %>" value="<%= @contact.send custom_field.slug %>">
@@ -11,10 +16,15 @@
       <textarea name="<%= custom_field.slug %>" class="form-control"><%= @contact.send custom_field.slug %></textarea>
     <% elsif custom_field.content_type_combobox? %>
       <select name="<%= custom_field.slug %>" class="form-control">
-        <% custom_field.combobox_options.each_line do |value| %>
-          <option value="<%= value %>"><%= value %></option>
+        <% custom_field.combobox_options_array.each do |value| %>
+          <option value="<%= value %>"<%= ' selected' if value == @contact.send(custom_field.slug) %>><%= value %></option>
         <% end %>
       </select>
+    <% end %>
+    <% if @contact.errors[custom_field.slug].any? %>
+      <% @contact.errors[custom_field.slug].each do |msg| %>
+        <span class="help-block"><%= msg %></span>
+      <% end %>
     <% end %>
   </div>
 <% end %>

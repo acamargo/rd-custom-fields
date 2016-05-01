@@ -1,6 +1,11 @@
+require 'rfc2822'
+
 class User < ActiveRecord::Base
-  validates :email, :password, presence: true
+  validates :password, presence: true
   validates :email, uniqueness: true
+  validate do
+    errors.add(:email, I18n.t('errors.messages.invalid')) unless email =~ RFC2822::EmailAddress
+  end
 
   has_many :custom_fields
   has_many :contacts

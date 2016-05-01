@@ -36,4 +36,17 @@ class CustomFieldTest < ActiveSupport::TestCase
     custom_field.name = 'EMAIL'
     assert custom_field.invalid?
   end
+
+  test "combobox field should have options" do
+    user = User.create(email: 'andreribeirocamargo@gmail.com', password: 'r41lz')
+    custom_field = CustomField.new(user: user, name: 'Tenista', content_type: CustomField::COMBOBOX)
+    assert custom_field.invalid?
+    assert custom_field.errors[:combobox_options].any?
+    custom_field.combobox_options = "\n\n\n\n\n\n\n\n\n\n"
+    assert custom_field.invalid?
+    assert custom_field.errors[:combobox_options].any?
+    custom_field.combobox_options = "Rafael Nadal\r\nNovak Djokovic\nRoger Federer"
+    assert custom_field.valid?
+    assert_equal ['Rafael Nadal', 'Novak Djokovic', 'Roger Federer'], custom_field.combobox_options_array
+  end
 end

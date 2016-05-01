@@ -7,15 +7,16 @@ class CustomField < ActiveRecord::Base
 
   validates :name, presence: true
   validates :content_type, inclusion: { in: [TEXT, TEXTAREA, COMBOBOX] }
-  validates_associated :user
 
   validate do
-    if ['email', 'e-mail'].include? name.to_s.downcase
-      errors.add(:name, 'forbidden')
-    end
+    errors.add(:user, I18n.t('errors.messages.blank')) if user.blank?
+    errors.add(:name, I18n.t('errors.messages.reserved')) if ['email', 'e-mail'].include? name.to_s.downcase
+    errors.add(:combobox_options, I18n.t('errors.messages.blank')) if content_type_combobox? && combobox_options_array.empty?
   end
 
   has_many :contact_custom_field_value, dependent: :delete_all
+
+  scope :comboboxes, -> { where(content_type: COMBOBOX) }
 
   def name=(value)
     self.slug = normalize(value)
@@ -23,7 +24,11 @@ class CustomField < ActiveRecord::Base
   end
 
   def combobox_options=(value)
-    write_attribute :combobox_options, value.to_s.gsub(/[\r\n|\n]+/, "\n").chomp
+    write_attribute :combobox_options, value.to_s.gsub(/[\r?\n]+/, "\n").chomp
+  end
+
+  def combobox_options_array
+    combobox_options.to_s.split(/\r?\n/)
   end
 
   def content_type_options

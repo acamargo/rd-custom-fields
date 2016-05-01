@@ -6,7 +6,7 @@ class UserTest < ActiveSupport::TestCase
     assert user_andre.save
     user_joao = User.new(email: 'andre@localhost', password: '123')
     assert user_joao.invalid?
-    assert_equal ['has already been taken'], user_joao.errors[:email]
+    assert_equal [I18n.t('errors.messages.taken')], user_joao.errors[:email]
   end
   test "encrypt the password" do
     new_user = User.new

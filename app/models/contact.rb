@@ -4,7 +4,7 @@ class Contact < ActiveRecord::Base
   validates_associated :user
   validates :email, presence: true
 
-  has_many :contact_custom_field_values
+  has_many :contact_custom_field_values, dependent: :delete_all
 
   def method_missing(method_name, *args)
     @custom_field_values ||= load_custom_field_values

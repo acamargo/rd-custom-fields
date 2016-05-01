@@ -15,7 +15,7 @@ class CustomField < ActiveRecord::Base
     end
   end
 
-  has_many :contact_custom_field_value
+  has_many :contact_custom_field_value, dependent: :delete_all
 
   def name=(value)
     self.slug = normalize(value)

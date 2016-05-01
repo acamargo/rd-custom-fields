@@ -58,6 +58,27 @@ class CustomField < ActiveRecord::Base
   private
 
   def normalize(value)
-    'custom_field_' + I18n.transliterate(value).downcase.split.join('_')
+    'custom_field_' + sanitize(value)
+  end
+
+  def sanitize(string, options={})
+    buffer = string.gsub(/\s+/, '_')
+    { "ä"=>"a", "ã"=>"a", "á"=>"a", "à"=>"a", "â"=>"a", "Ä"=>"a", "Ã"=>"a", "Á"=>"a", "À"=>"a", "Â"=>"a",
+      "é"=>"e", "ê"=>"e", "ë"=>"e", "É"=>"e", "Ê"=>"e", "Ë"=>"e",
+      "í"=>"i", "Í"=>"i",
+      "ó"=>"o", "õ"=>"o", "ô"=>"o", "ö"=>"o", "Ó"=>"o", "Õ"=>"o", "Ô"=>"o", "Ö"=>"o",
+      "ú"=>"u", "Ú"=>"u", "ü"=>"u", "Ü"=>"u",
+      "²"=>"2", "³"=>"3",
+      "ª"=>"a", "º"=>"o", "°"=>"o", '&'=>"e",
+      'ç' => 'c', 'Ç' => 'c',
+      'ñ' => 'n', 'Ñ' => 'n',
+      ' ' => '_', # espaco
+      '.' => '', '(' => '', ')' => '', '[' => '', ']' => '', '{' => '', '}' => '',
+      '<' => '', '>' => '', '|' => '',
+      ' ' => '', # non-breaking space
+      '"' => '', "'" => '', "´" => '', '+' => '', '%' => '', '#' => '', '/' => '', ',' => '',
+      '!' => '', '?' => '', ':' => '', '–' => '', '$' => 'S', '“' => '', '”' => '', '’' => '', '‘' => ''
+    }.update(options).each_pair {|k,v| buffer.gsub!(k, v) }
+    buffer.downcase.gsub(/[^a-z0-9\-_#{options.values.join}]/, '') # vai remover inclusive os non-printing characters
   end
 end

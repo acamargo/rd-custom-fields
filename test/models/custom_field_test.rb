@@ -49,4 +49,14 @@ class CustomFieldTest < ActiveSupport::TestCase
     assert custom_field.valid?
     assert_equal ['Rafael Nadal', 'Novak Djokovic', 'Roger Federer'], custom_field.combobox_options_array
   end
+
+  test "normalization" do
+    user = User.create(email: 'andreribeirocamargo@gmail.com', password: 'r41lz')
+    custom_field = CustomField.new(user: user, name: 'Tenista', content_type: CustomField::COMBOBOX)
+    assert_equal 'custom_field_tenista', custom_field.slug
+    custom_field.name = 'Caixa de Seleção'
+    assert_equal 'custom_field_caixa_de_selecao', custom_field.slug
+    custom_field.name = 'Wow!    ~eSte é um nome ba$tante estranh# para um campo'
+    assert_equal 'custom_field_wow_este_e_um_nome_bastante_estranh_para_um_campo', custom_field.slug
+  end
 end

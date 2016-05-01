@@ -1,6 +1,6 @@
 <p><%= link_to 'Adicionar Campo Personalizado', new_custom_field_path, class: 'btn btn-success' %></p>
 <% if @custom_fields.count == 0 %>
-  <p>Nenhum campo cadastrado.</p>
+  <div class="well">Nenhum campo cadastrado.</div>
 <% else %>
   <table class="table table-hover">
     <thead>

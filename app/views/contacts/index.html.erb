@@ -1,6 +1,6 @@
 <p><%= link_to 'Adicionar Contato', new_contact_path, class: 'btn btn-success' %></p>
 <% if @contacts.count == 0 %>
-  <p>Nenhum contato cadastrado.</p>
+  <div class="well">Nenhum contato cadastrado.</div>
 <% else %>
   <table class="table table-hover">
     <thead>
